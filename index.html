@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Redirection Page</title>
+  </head>
+  <body>
+    <h1>Authentication Redirection Page</h1>
+    <script>
+      (function () {
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const authCode = urlParams.get("code");
+        const redirectUrlWithProvider = urlParams.get("state").split("|");
+        const redirectUrl = redirectUrlWithProvider[0];
+        const provider = redirectUrlWithProvider[1];
+        if (authCode && redirectUrl && provider) {
+          const newUrl = new URL(redirectUrl);
+          newUrl.searchParams.set("code", authCode);
+          newUrl.searchParams.set("provider", provider);
+          window.location.href = newUrl.toString();
+        }
+      })();
+    </script>
+  </body>
+</html>
